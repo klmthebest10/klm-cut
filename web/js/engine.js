@@ -330,6 +330,7 @@ function buildVoice(ctx, id) {
   const filt = (type, f, q = .7, gain = 0) => { const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f; b.Q.value = q; b.gain.value = gain; return b; };
   const wetdry = (node, wet) => { const w = ctx.createGain(); w.gain.value = wet; input.connect(output); input.connect(node); node.connect(w).connect(output); };
   switch (id) {
+    case 'enhance': { const hp = filt('highpass', 90, .7), pres = filt('peaking', 3200, 1, 4), air = filt('highshelf', 9000, .7, 2.5), cp = ctx.createDynamicsCompressor(); cp.threshold.value = -26; cp.ratio.value = 3.5; cp.attack.value = .005; cp.release.value = .2; input.connect(hp).connect(pres).connect(air).connect(cp).connect(output); output.gain.value = 1.15; break; }
     case 'echo': { const d = ctx.createDelay(1.5); d.delayTime.value = .28; const fb = ctx.createGain(); fb.gain.value = .42; d.connect(fb).connect(d); wetdry(d, .55); break; }
     case 'reverb': { const cv = ctx.createConvolver(); cv.buffer = impulse(ctx, 1.6, 3); wetdry(cv, .45); break; }
     case 'hall': { const cv = ctx.createConvolver(); cv.buffer = impulse(ctx, 3.8, 2.2); wetdry(cv, .65); break; }
