@@ -1,0 +1,7 @@
+android/app/build/
+android/.gradle/
+android/app/src/main/assets/
+launcher/web/
+*.log
+dist/
+launcher/KLM-Cut.exe

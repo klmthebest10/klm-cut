@@ -1,0 +1,51 @@
+{
+  "id": "./",
+  "name": "KLM Cut — Editor Video",
+  "short_name": "KLM Cut",
+  "description": "Editor video lengkap: multi-track, teks, stiker, efek, transisi, filter, keyframe, subtitle, ekspor MP4. Jalan offline di HP & PC.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d0d10",
+  "theme_color": "#0d0d10",
+  "categories": ["photo", "productivity", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Proyek baru", "short_name": "Baru", "url": "./?new=1", "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }] }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "video/mp4": [".mp4", ".m4v"],
+        "video/quicktime": [".mov"],
+        "video/webm": [".webm"],
+        "video/x-matroska": [".mkv"],
+        "image/png": [".png"],
+        "image/jpeg": [".jpg", ".jpeg"],
+        "image/webp": [".webp"],
+        "image/gif": [".gif"],
+        "audio/mpeg": [".mp3"],
+        "audio/wav": [".wav"],
+        "audio/mp4": [".m4a"],
+        "application/x-klmcut": [".klmcut"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "./share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "files": [{ "name": "media", "accept": ["video/*", "image/*", "audio/*"] }]
+    }
+  }
+}

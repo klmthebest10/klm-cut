@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>KLM Cut — Editor Video</title>
+<meta name="description" content="KLM Cut: editor video lengkap di browser, HP dan PC. Multi-track, teks, stiker, efek, transisi, filter, keyframe, ekspor MP4.">
+<meta name="theme-color" content="#0e0e11">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLM Cut">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= BERANDA ================= -->
+  <section id="home" class="view">
+    <header class="home-top">
+      <div class="brand"><img src="icons/icon-192.png" alt=""><b>KLM</b><span>Cut</span></div>
+      <div class="home-actions">
+        <button class="btn ghost hidden" id="btn-install" type="button"></button>
+        <button class="icon-btn" id="btn-home-settings" type="button" title="Pengaturan"></button>
+      </div>
+    </header>
+    <div class="home-main">
+      <div class="hero">
+        <button class="new-card" id="btn-new" type="button">
+          <span class="nc-ico"></span>
+          <span class="nc-txt"><b>Proyek baru</b><small>Mulai edit video dari nol</small></span>
+        </button>
+        <div class="hero-side">
+          <button class="quick" id="btn-open-file" type="button"><span class="q-ico" data-ico="folder"></span><span>Buka file proyek</span></button>
+          <button class="quick" id="btn-quick-tpl" type="button"><span class="q-ico" data-ico="grid"></span><span>Mulai dari templat</span></button>
+          <button class="quick" id="btn-quick-ratio" type="button"><span class="q-ico" data-ico="ratio"></span><span>Proyek dengan rasio…</span></button>
+          <button class="quick" id="btn-quick-help" type="button"><span class="q-ico" data-ico="keyboard"></span><span>Pintasan & bantuan</span></button>
+        </div>
+      </div>
+      <div class="proj-head">
+        <h2>Proyek saya <span id="proj-count"></span></h2>
+        <input type="search" id="proj-search" placeholder="Cari proyek…">
+      </div>
+      <div class="proj-grid" id="proj-grid"></div>
+      <p class="home-foot" id="home-foot"></p>
+    </div>
+  </section>
+
+  <!-- ================= EDITOR ================= -->
+  <section id="editor" class="view hidden">
+    <header class="topbar">
+      <div class="tb-left">
+        <button class="icon-btn" id="btn-back" type="button" title="Kembali ke beranda"></button>
+        <div class="brand sm"><img src="icons/icon-192.png" alt=""><b>KLM</b><span>Cut</span></div>
+        <button class="btn ghost sm" id="btn-menu" type="button">Menu</button>
+        <button class="icon-btn d-only" id="btn-undo" type="button" title="Urungkan (Ctrl+Z)"></button>
+        <button class="icon-btn d-only" id="btn-redo" type="button" title="Ulangi (Ctrl+Y)"></button>
+      </div>
+      <div class="tb-center">
+        <input id="proj-name" class="proj-name" spellcheck="false" maxlength="60">
+        <span class="save-state" id="save-state"></span>
+      </div>
+      <div class="tb-right">
+        <button class="chip m-only" id="btn-m-res" type="button">1080P</button>
+        <button class="icon-btn d-only" id="btn-help" type="button" title="Pintasan keyboard"></button>
+        <button class="btn accent" id="btn-export" type="button"></button>
+      </div>
+    </header>
+
+    <div class="workspace" id="workspace">
+      <aside class="assets" id="assets">
+        <nav class="asset-tabs" id="asset-tabs"></nav>
+        <div class="asset-body" id="asset-body"></div>
+      </aside>
+
+      <main class="preview" id="preview">
+        <div class="pv-head d-only"><span>Pemutar</span><span class="pv-info" id="pv-info"></span></div>
+        <div class="pv-stage" id="pv-stage">
+          <div class="pv-wrap" id="pv-wrap">
+            <canvas id="pv-canvas"></canvas>
+            <div class="pv-overlay" id="pv-overlay"></div>
+          </div>
+          <div class="pv-empty hidden" id="pv-empty">
+            <div class="pe-ico"></div>
+            <p>Impor video, foto, atau audio untuk mulai</p>
+            <button class="btn accent" id="btn-empty-import" type="button">Impor media</button>
+          </div>
+        </div>
+        <div class="pv-controls">
+          <div class="pv-time"><span id="t-cur">00:00:00:00</span><span class="sep">/</span><span id="t-dur">00:00:00:00</span></div>
+          <div class="pv-mid">
+            <button class="icon-btn" id="btn-prev" type="button" title="Frame sebelumnya (←)"></button>
+            <button class="play-btn" id="btn-play" type="button" title="Putar/Jeda (Spasi)"></button>
+            <button class="icon-btn" id="btn-next" type="button" title="Frame berikutnya (→)"></button>
+          </div>
+          <div class="pv-right">
+            <button class="icon-btn m-only" id="btn-m-undo" type="button"></button>
+            <button class="icon-btn m-only" id="btn-m-redo" type="button"></button>
+            <select id="sel-ratio" class="mini-sel d-only" title="Rasio"></select>
+            <select id="sel-quality" class="mini-sel d-only" title="Kualitas pratinjau">
+              <option value="auto">Otomatis</option>
+              <option value="full">Penuh</option>
+              <option value="720">720p</option>
+              <option value="480">480p</option>
+              <option value="360">360p</option>
+            </select>
+            <button class="icon-btn" id="btn-snap" type="button" title="Ambil foto frame (PNG)"></button>
+            <button class="icon-btn" id="btn-full" type="button" title="Layar penuh"></button>
+          </div>
+        </div>
+      </main>
+
+      <aside class="inspector" id="inspector"></aside>
+    </div>
+
+    <div class="resizer d-only" id="tl-resizer" title="Seret untuk ubah tinggi timeline"></div>
+    <section class="timeline" id="timeline"></section>
+
+    <nav class="m-toolbar m-only" id="m-toolbar"></nav>
+
+    <div class="sheet" id="sheet" aria-hidden="true">
+      <div class="sheet-head">
+        <button class="icon-btn" id="sheet-back" type="button"></button>
+        <span id="sheet-title"></span>
+        <button class="icon-btn ok" id="sheet-ok" type="button"></button>
+      </div>
+      <div class="sheet-body" id="sheet-body"></div>
+    </div>
+  </section>
+</div>
+
+<div id="media-pool" aria-hidden="true"></div>
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+<div id="drop-hint" class="hidden"><div>Lepaskan file untuk mengimpor</div></div>
+<input type="file" id="file-input" multiple hidden>
+
+<script src="js/util.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/media.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/preview.js"></script>
+<script src="js/panels.js"></script>
+<script src="js/inspector.js"></script>
+<script src="js/mp4mux.js"></script>
+<script src="js/pro.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

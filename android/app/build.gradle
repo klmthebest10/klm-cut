@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+}
+
+def runNo = (System.getenv('GITHUB_RUN_NUMBER') ?: '1').toInteger()
+def storePass = System.getenv('KLM_STORE_PASS') ?: 'klmcut2026'
+
+android {
+    namespace 'com.klm.cut'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.klm.cut'
+        minSdk 24
+        targetSdk 34
+        versionCode 100 + runNo
+        versionName "1.1.${runNo}"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../klmcut-release.jks')
+            storePassword storePass
+            keyAlias 'klmcut'
+            keyPassword storePass
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    androidResources {
+        noCompress += ['mp4', 'webm']
+    }
+}

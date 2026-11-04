@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="klm_bg">#FF0D0D10</color>
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/klm_bg</item>
+        <item name="android:colorPrimary">@color/klm_bg</item>
+        <item name="android:colorPrimaryDark">@color/klm_bg</item>
+        <item name="android:colorAccent">#FFFFC93C</item>
+        <item name="android:statusBarColor">@color/klm_bg</item>
+        <item name="android:navigationBarColor">@color/klm_bg</item>
+    </style>
+</resources>
