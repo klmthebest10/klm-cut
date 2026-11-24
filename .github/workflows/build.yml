@@ -20,6 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Bangun exe Windows
+        run: |
+          rm -rf launcher/web && cp -r web launcher/web
+          cd launcher && GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -H=windowsgui" -o ../KLM-Cut.exe .
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -57,9 +66,13 @@ jobs:
           tag_name: v1.1.${{ github.run_number }}
           name: KLM Cut v1.1.${{ github.run_number }}
           body: |
-            Pasang `KLM-Cut.apk` di Android (izinkan "install dari sumber tidak dikenal").
+            **Windows:** unduh `KLM-Cut.exe`, klik dua kali untuk membuka (bila muncul SmartScreen: *Info selengkapnya → Tetap jalankan*).
+            **Android:** pasang `KLM-Cut.apk` (izinkan "install dari sumber tidak dikenal").
             Versi web/PWA: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
-          files: KLM-Cut.apk
+          make_latest: true
+          files: |
+            KLM-Cut.exe
+            KLM-Cut.apk
 
   pages:
     runs-on: ubuntu-latest
